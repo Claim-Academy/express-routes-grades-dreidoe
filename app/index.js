@@ -169,3 +169,15 @@ const STUDENTS = [
 app.get("/api/students", (_, response) => {
   response.json(STUDENTS);
 });
+
+app.get("/api/contacts/:id", (request, response) => {
+  const { id } = request.params;
+
+  const foundStudent = STUDENTS.find((student) => student.id === Number(id));
+
+  if (foundStudent) {
+    response.json(foundStudent);
+  } else {
+    response.status(404).json({ message: "Contact not found" });
+  }
+});
