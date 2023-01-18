@@ -10,11 +10,7 @@ app.get("/api/students/attendance", (_, res) => {
   res.json(STUDENTS.map((student) => student.name));
 });
 
-app.listen(3000, () => {
-  console.info("server is running on port 3000");
-});
-
-app.get("/api/contacts/:id", (request, response) => {
+app.get("/api/students/:id", (request, response) => {
   const { id } = request.params;
 
   const foundStudent = STUDENTS.find((student) => student.id === Number(id));
@@ -25,6 +21,11 @@ app.get("/api/contacts/:id", (request, response) => {
     response.status(404).json({ message: "Student not found" });
   }
 });
+
+app.listen(3000, () => {
+  console.info("server is running on port 3000");
+});
+
 app.delete("/api/contacts/:id", (request, response) => {
   const id2Delete = request.params.id;
 
