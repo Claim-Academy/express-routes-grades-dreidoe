@@ -1,7 +1,11 @@
 import express from "express";
 import STUDENTS from "./GRADES.js";
+import studentRoutes from "./student/routes.js";
 
 const app = express();
+// this is a middleware
+// any request that starts with /api/students will be handled by studentRoutes
+app.use("/api/students", studentRoutes);
 
 app.get("/api/students", (_, res) => {
   res.json(STUDENTS);
