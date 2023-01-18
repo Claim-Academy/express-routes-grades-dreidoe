@@ -6,6 +6,10 @@ app.get("/api/students", (_, response) => {
   response.json(STUDENTS);
 });
 
+app.get("/api/students/attendance", (_, res) => {
+  res.json(STUDENTS.map((student) => student.name));
+});
+
 app.listen(3000, () => {
   console.info("server is running on port 3000");
 });
