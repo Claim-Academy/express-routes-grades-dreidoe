@@ -1,41 +1,74 @@
 import express from "express";
-const app = express();
 import STUDENTS from "./GRADES.js";
 
-app.get("/api/students", (_, response) => {
-  response.json(STUDENTS);
+const app = express();
+
+app.get("/api/students", (_, res) => {
+  res.json(STUDENTS);
 });
 
 app.get("/api/students/attendance", (_, res) => {
   res.json(STUDENTS.map((student) => student.name));
 });
 
-app.get("/api/students/:id", (request, response) => {
-  const { id } = request.params;
+app.get("/api/students/:id", (req, res) => {
+  // * This is a string
+  const { id } = req.params;
 
-  const foundStudent = STUDENTS.find((student) => student.id === Number(id));
+  const student = STUDENTS.find((student) => student.id === Number(id));
 
-  if (foundStudent) {
-    response.json(foundStudent);
+  if (student) {
+    res.json(student);
   } else {
-    response.status(404).json({ message: "Student not found" });
+    res.status(404).json({ message: "Student not found" });
   }
 });
 
-app.listen(3000, () => {
-  console.info("server is running on port 3000");
+// * This is a middleware
+// Tell express to parse the request body as JSON
+// Without this, req.body will be undefined
+app.use(express.json());
+
+app.post("/api/students", (req, res) => {
+  const newStudent = req.body;
+
+  if (newStudent.name) {
+    // Avoid push - this is for demo purposes only
+    STUDENTS.push(
+      // * This is a spread operator
+      // We will mix in the grades property with an empty array
+      { ...newStudent, grades: [] }
+    );
+
+    // No persistence - but send back the updated temporary STUDENTS
+    res.json(STUDENTS);
+  } else {
+    res.status(400).json({ message: "Student name is required" });
+  }
 });
 
-app.delete("/api/contacts/:id", (request, response) => {
-  const id2Delete = request.params.id;
+app.put("/api/students/:id/grades", (req, res) => {
+  // Id of the student to update
+  const { id } = req.params;
 
-  // Filter out the contact with the id to delete
-  const updatedContacts = STUDENTS.filter(
-    (student) => student.id !== Number(id2Delete)
-  );
+  const student2Update = STUDENTS.find((student) => student.id === Number(id));
 
-  response.json({
-    message: `Student deleted successfully with id: ${id2Delete}`,
-    updatedContacts,
-  });
+  if (student2Update) {
+    // * This is a spread operator
+    // We will mix in the grades property with an empty array
+    student2Update.grades.push(req.body);
+
+    // No persistence - but send back the updated temporary STUDENTS
+    res.json(student2Update);
+  } else {
+    res.status(404).json({ message: "Student not found" });
+  }
+});
+
+app.delete("/api/students/:id", (req, res) => {
+  res.json(STUDENTS.filter((student) => student.id !== Number(req.params.id)));
+});
+
+app.listen(3000, () => {
+  console.info("Server is running on port 3000");
 });
