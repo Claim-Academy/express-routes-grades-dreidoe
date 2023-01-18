@@ -1,4 +1,4 @@
-import STUDDENTS2 from "./GRADES.js";
+import GRADES from "./GRADES.js";
 
 import express from "express";
 const app = express();
@@ -178,7 +178,7 @@ app.get("/api/contacts/:id", (request, response) => {
   if (foundStudent) {
     response.json(foundStudent);
   } else {
-    response.status(404).json({ message: "Contact not found" });
+    response.status(404).json({ message: "Student not found" });
   }
 });
 app.delete("/api/contacts/:id", (request, response) => {
@@ -190,7 +190,7 @@ app.delete("/api/contacts/:id", (request, response) => {
   );
 
   response.json({
-    message: `Contact deleted successfully with id: ${id2Delete}`,
+    message: `Student deleted successfully with id: ${id2Delete}`,
     updatedContacts,
   });
 });
