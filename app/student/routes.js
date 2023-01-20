@@ -1,5 +1,6 @@
 import { Router } from "express";
 import STUDENTS from "../GRADES.js";
+export default Router();
 
 const router = new Router();
 
