@@ -1,6 +1,6 @@
 import express from "express";
 
-import studentRoutes from "./student/routes.js";
+import studentsRouter from "./student/routes.js";
 const app = express();
 
 // * This is a middleware
@@ -10,7 +10,7 @@ app.use(express.json());
 
 // this is a middleware
 // any request that starts with /api/students will be handled by studentRoutes
-app.use("/api/students/", studentRoutes);
+app.use("/api/students/", studentsRouter);
 
 app.listen(3000, () => {
   console.info("Server is running on port 3000");
