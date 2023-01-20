@@ -1,17 +1,26 @@
 import { Router } from "express";
 import STUDENTS from "../GRADES.js";
-export default Router();
+import studentController from "./controller.js";
 
 const router = new Router();
 
 // /api/student
 // * DON'T REPEAT '/api/students' - it's already in app/index.js
 router.get("/", (_, res) => {
-  res.json(STUDENTS);
+  studentController
+    .getStudents()
+    .then((students) => {
+      res.json(students);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
 });
 
 router.get("/attendance", (_, res) => {
-  res.json(STUDENTS.map((student) => student.name));
+  studentController.getAttendance().then((attendance) => {
+    res.json(attendance);
+  });
 });
 
 router.get("/:id", (req, res) => {
