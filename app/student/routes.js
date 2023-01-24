@@ -22,7 +22,6 @@ router.get("/attendance", (_, res) => {
     res.json(attendance);
   });
 });
-
 router.get("/:id", (req, res) => {
   studentController
     .getStudentById(req.params.id)
